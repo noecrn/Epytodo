@@ -148,6 +148,32 @@ router.put("/users/:id", (req, res) => {
     });
 });
 
-router.delete("/users/:id")
+router.delete("/users/:id", (req, res) => {
+	const id = req.params.id;
+
+	const deleteQuery = "DELETE FROM userTable WHERE id = ?";
+
+	db.getConnection((err, connection) => {
+		if (err) {
+			console.log("[ERROR]" + err);
+			return res.status(500).json({ msg: "Internal server error" });
+		}
+
+		connection.query(deleteQuery, [id], (err, result) => {
+			connection.release();
+
+			if (err){
+				console.log("[ERROR]" + err);
+				return res.status(500).json({ msg: "Internal server error" });
+			}
+
+			if (result.affectedRows === 0) {
+				return res.status(404).json({ msg: "User not found" });
+			}
+
+			res.status(200).json({ msg: `Successfully deleted record number: ${id}`})
+		});
+	});
+});
 
 module.exports = router;

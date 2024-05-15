@@ -6,6 +6,7 @@ const generateAccessToken = require('../../utils/generateAccessToken');
 
 const router = express.Router();
 
+// Register a new user
 router.post("/register", async (req,res) => {
 	const email = req.body.email;
 	const name = req.body.name;
@@ -36,6 +37,7 @@ router.post("/register", async (req,res) => {
 	})
 });
 
+// Connect a user
 router.post("/login", (req, res)=> {
 	const email = req.body.email
 	const password = req.body.password

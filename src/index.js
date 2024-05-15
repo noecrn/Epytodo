@@ -11,7 +11,7 @@ const auth = require('./middleware/auth');
 // Routes
 const authRoutes = require('./routes/auth/auth');
 const userRoutes = require('./routes/user/user');
-// const todosRoutes = require('./routes/todos/todos');
+const todosRoutes = require('./routes/todos/todos');
 
 // Use Middleware
 app.use(express.json());
@@ -19,7 +19,7 @@ app.use(express.json());
 // Use Routes
 app.use('/auth', authRoutes);
 app.use('/user', auth, userRoutes);
-// app.use('/todos', auth, todosRoutes);
+app.use('/todos', auth, todosRoutes);
 
 app.use(notFound);
 

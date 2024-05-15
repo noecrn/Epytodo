@@ -1,12 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('../../config/db');
+const userQuery = require('./user.query');
+const todosQuery = require('../todos/todos.query');
 
 const router = express.Router();
 
+// View all user information
 router.get("/user", (req, res) => {
 	const email = req.user.email;
-	const getQuery = "SELECT id, email, password, name, firstname, created_at FROM userTable WHERE email = ?";
 
     db.getConnection((err, connection) => {
         if (err) {
@@ -14,7 +16,7 @@ router.get("/user", (req, res) => {
             return res.status(500).json({ msg: "Internal server error" });
         }
 
-        connection.query(getQuery, [email], (err, result) => {
+        connection.query(userQuery.getuserByEmail, [email], (err, result) => {
             connection.release();
             if (err) {
                 console.error("[ERROR] " + err);
@@ -38,9 +40,9 @@ router.get("/user", (req, res) => {
     });
 });
 
+// View all user tasks
 router.get("/user/todos", (req, res) => {
 	const email = req.user.email;
-	const getQuery = "SELECT id, title, description, created_at, due_time, status, user_id FROM todoTable WHERE user_id = ?";
 
     db.getConnection((err, connection) => {
         if (err) {
@@ -48,7 +50,7 @@ router.get("/user/todos", (req, res) => {
             return res.status(500).json({ msg: "Internal server error" });
         }
 
-        connection.query(getQuery, [req.user.id], (err, result) => {
+        connection.query(todosQuery.getTodoByUser_id, [req.user.id], (err, result) => {
             connection.release();
             if (err) {
                 console.error("[ERROR] " + err);
@@ -63,14 +65,15 @@ router.get("/user/todos", (req, res) => {
     });
 });
 
+// View user information
 router.get("/users/:identifier", (req, res) => {
     const identifier = req.params.identifier;
     let getQuery;
 
     if (isNaN(identifier)) {
-        getQuery = "SELECT * FROM userTable WHERE email = ?";
+        userQuery.getuserByEmail;
     } else {
-        getQuery = "SELECT * FROM userTable WHERE id = ?";
+        userQuery.getuserById;
     }
 
     db.getConnection((err, connection) => {
@@ -96,6 +99,7 @@ router.get("/users/:identifier", (req, res) => {
     });
 });
 
+// Update user information
 router.put("/users/:id", (req, res) => {
     const id = req.params.id;
     const { email, password, firstname, name } = req.body;
@@ -106,15 +110,13 @@ router.put("/users/:id", (req, res) => {
             return res.status(500).json({ msg: "Internal server error"});
         }
 
-        const updateQuery = "UPDATE userTable SET email = ?, password = ?, firstname = ?, name = ? WHERE id = ?";
-
         db.getConnection((err, connection) => {
             if (err) {
                 console.error("[ERROR] " + err);
                 return res.status(500).json({ msg: "Internal server error" });
             }
 
-            connection.query(updateQuery, [email, hashedPassword, firstname, name, id], (err, result) => {
+            connection.query(userQuery.updateuser, [email, hashedPassword, firstname, name, id], (err, result) => {
                 if (err) {
                     connection.release();
                     console.error("[ERROR] " + err);
@@ -125,7 +127,7 @@ router.put("/users/:id", (req, res) => {
                     return res.status(404).json({ msg: "User not found" });
                 }
 
-                connection.query('SELECT * FROM userTable WHERE id = ?', [id], (err, rows) => {
+                connection.query(userQuery.getuserById, [id], (err, rows) => {
                     if (err) {
                         connection.release();
                         console.error("[ERROR]" + err);
@@ -148,10 +150,9 @@ router.put("/users/:id", (req, res) => {
     });
 });
 
+// Delete user
 router.delete("/users/:id", (req, res) => {
 	const id = req.params.id;
-
-	const deleteQuery = "DELETE FROM userTable WHERE id = ?";
 
 	db.getConnection((err, connection) => {
 		if (err) {
@@ -159,7 +160,7 @@ router.delete("/users/:id", (req, res) => {
 			return res.status(500).json({ msg: "Internal server error" });
 		}
 
-		connection.query(deleteQuery, [id], (err, result) => {
+		connection.query(userQuery.deleteuser, [id], (err, result) => {
 			connection.release();
 
 			if (err){

@@ -19,6 +19,26 @@ router.get("/todos", (req, res) => {
 	});
 });
 
+// View the todo
+router.get("/todos/:id", (req, res) => {
+	const id = req.params.id;
+
+	db.getConnection((err, connection) => {
+		connection.query(todosQuery.getTodoById, [id], (err, result) => {
+			if (err) {
+				console.log("[ERROR]" + err);
+				return res.status(500).json({ msg: "Internal server error" });
+			}
+
+			if (result.length === 0) {
+				return res.status(404).json({ msg: "Todo not found" });
+			}
+
+			res.status(200).json(result[0]);
+		});
+	});
+});
+
 // Create a todo
 router.post("/todos", (req, res) => {
     const { title, description, due_time, user_id, status } = req.body;

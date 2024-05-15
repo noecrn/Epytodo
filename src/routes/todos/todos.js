@@ -131,4 +131,31 @@ router.put("/todos/:id", (req, res) => {
 	});
 });
 
+// Delete a todo
+router.delete("/todos/:id", (req, res) => {
+	const id = req.params.id;
+
+	db.getConnection((err, connection) => {
+		if (err) {
+			connection.release();
+			console.log("[ERROR]" + err);
+			return res.status(500).json({ msg: "Internal server error" });
+		}
+
+		connection.query(todosQuery.deleteTodo, [id], (err, result) => {
+			if (err) {
+				connection.release();
+				console.log("[ERROR]" + err);
+				return res.status(500).json({ msg: "Internal server error" });
+			}
+
+			if (result.affectedRows === 0) {
+				return res.status(404).json({ msg: "Todo not found" });
+			}
+
+			res.status(200).json({msg: `Successfully deleted record number: ${id}`})
+		});
+	});
+});
+
 module.exports = router;

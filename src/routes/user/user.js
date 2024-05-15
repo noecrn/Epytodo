@@ -122,6 +122,7 @@ router.put("/users/:id", (req, res) => {
                     console.error("[ERROR] " + err);
                     return res.status(500).json({ msg: "Internal server error" });
                 }
+                
                 if (result.affectedRows === 0) {
                     connection.release();
                     return res.status(404).json({ msg: "User not found" });

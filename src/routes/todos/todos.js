@@ -88,4 +88,47 @@ router.post("/todos", (req, res) => {
     });
 });
 
+// Update a todo
+router.put("/todos/:id", (req, res) => {
+	const id = req.params.id;
+	const { title, description, due_time, user_id, status } = req.body;
+
+	db.getConnection((err, connection) => {
+		if (err) {
+			console.log("[ERROR]" + err);
+			return res.status(500).json({ msg: "Internal server error" });
+		}
+		connection.query(todosQuery.updateTodo, [title, description, due_time, user_id, status, id], (err, result) => {
+			if (err) {
+				connection.release();
+				console.log("[ERROR]" + err);
+				return res.status(500).json({ msg: "Internal server error" });
+			}
+
+			if (result.affectedRows === 0) {
+				connection.release();
+				return res.status(404).json({ msg: "Todo not found" });
+			}
+
+			connection.query(todosQuery.getTodoById, [id], (err, rows) => {
+				if (err) {
+					connection.release();
+					console.log("[ERROR]" + err);
+					return res.status(500).json({ msg: "Internal server error" });
+				}
+
+				connection.release();
+				const user = rows[0];
+				res.json({
+					title: user.title,
+					description: user.description,
+					due_time: due_time,
+					user_id: user.user_id,
+					status: user.status
+				})
+			});
+		});
+	});
+});
+
 module.exports = router;

@@ -5,48 +5,45 @@ const express = require("express")
 const app = express()
 const mysql = require("mysql")
 const bcrypt = require("bcrypt")
-const port = process.env.DB_PORT
+const port = process.env.PORT
 
 const generateAccessToken = require("./generateAccessToken")
 
 const db = mysql.createPool({
 	connectionLimit: 100,
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASSWORD,
-	database: process.env.DB_DATABASE,
+	host: process.env.MYSQL_HOST,
+	user: process.env.MYSQL_USER,
+	password: process.env.MYSQL_ROOT_PASSWORD,
+	database: process.env.MYSQL_DATABASE,
 	port: port
 })
 
 app.use(express.json())
 
-app.post("/createUser", async (req,res) => {
+app.post("/register", async (req,res) => {
+	const email = req.body.email;
 	const user = req.body.name;
+	const firstname = req.body.firstname;
 	const hashedPassword = await bcrypt.hash(req.body.password,10);
 
 	db.getConnection( async (err, connection) => {
 		if (err) throw (err)
-		const sqlSearch = "SELECT * FROM userTable WHERE user = ?"
+		const sqlSearch = "SELECT * FROM userTable WHERE name = ?"
 		const search_query = mysql.format(sqlSearch,[user])
-		const sqlInsert = "INSERT INTO userTable VALUES (0,?,?)"
-		const insert_query = mysql.format(sqlInsert,[user, hashedPassword])
+		const sqlInsert = "INSERT INTO userTable VALUES (0,?,?,?,?)"
+		const insert_query = mysql.format(sqlInsert,[email, user, firstname, hashedPassword])
 		
 		await connection.query (search_query, async (err, result) => {
 			if (err) throw (err)
-			console.log("------> Search Results")
-			console.log(result.length)
 			if (result.length != 0) {
 			connection.release()
-			console.log("------> User already exists")
-			res.sendStatus(409) 
+			res.json({msg: "Account already exists"})
 			} 
 			else {
 				await connection.query (insert_query, (err, result)=> {
 					connection.release()
 					if (err) throw (err)
-					console.log ("--------> Created new User")
-					console.log(result.insertId)
-					res.sendStatus(201)
+					res.sendStatus(201).json({token: "Token of the newly registered user"})
 				})
 			}
 		})
@@ -54,33 +51,29 @@ app.post("/createUser", async (req,res) => {
 })
 
 app.post("/login", (req, res)=> {
-	const user = req.body.name
+	const email = req.body.email
 	const password = req.body.password
 
 	db.getConnection ( async (err, connection)=> {
 		if (err) throw (err)
-		const sqlSearch = "Select * from userTable where user = ?"
-		const search_query = mysql.format(sqlSearch,[user])
+		const sqlSearch = "Select * from userTable where email = ?"
+		const search_query = mysql.format(sqlSearch,[email])
 
-		await connection.query (search_query, async (err, result) => {
+		connection.query (search_query, async (err, result) => {
 			connection.release()
 
 			if (err) throw (err)
 			if (result.length == 0) {
-				console.log("--------> User does not exist")
-				res.sendStatus(404)
-			} 
+				res.sendStatus(404).json({msg: "User does not exist"})
+			}
 			else {
 				const hashedPassword = result[0].password
 				
 				if (await bcrypt.compare(password, hashedPassword)) {
-					console.log("---------> Login Successful")
-					console.log("---------> Generating accessToken")
-					const token = generateAccessToken({user: user})
-					console.log(token)
-					res.json({accessToken: token})
+					const token = generateAccessToken({email: email})
+					res.json({token: token})
 				} else {
-					res.send("Password incorrect!")
+					res.json({msg: "Invalid Credentials"})
 				}
 			}
 		})
@@ -93,7 +86,7 @@ function authenticateToken(req, res, next) {
 
 	if (token == null) return res.sendStatus(401)
 
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "24h"}, (err, user) => {
+	jwt.verify(token, process.env.SECRET, {expiresIn: "24h"}, (err, user) => {
 		if (err) return res.sendStatus(403)
 		req.user = user
 		next()
@@ -101,8 +94,10 @@ function authenticateToken(req, res, next) {
 }
 
 app.get("/user", authenticateToken, (req, res) => {
+	const userId = req.userId.userId;
+	const email = req.email.email;
     const userName = req.user.user;
-    const getQuery = "SELECT user, password FROM userTable WHERE user = ?";
+    const getQuery = "SELECT user, password FROM userTable WHERE email = ?";
 
 	console.log(userName)
 
@@ -126,8 +121,11 @@ app.get("/user", authenticateToken, (req, res) => {
             const password = user.password;
 
             res.json({
-                username: userName,
-                password: password
+				id: userId,
+                email: email,
+                password: password,
+				firstname: firstname,
+				name: userName
             });
         });
     });

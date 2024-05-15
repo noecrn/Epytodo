@@ -5,6 +5,20 @@ const userQuery = require('../user/user.query');
 
 const router = express.Router();
 
+// View all user tasks
+router.get("/todos", (req, res) => {
+	db.getConnection((err, connection) => {
+		connection.query(todosQuery.getAllTodos, (err, result) => {
+			if (err) {
+				console.log("[ERROR]" + err);
+				return res.status(500).json({ msg: "Internal server error" });
+			}
+
+			res.status(200).json(result);
+		});
+	});
+});
+
 // Create a todo
 router.post("/todos", (req, res) => {
     const { title, description, due_time, user_id, status } = req.body;

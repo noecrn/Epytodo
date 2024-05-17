@@ -87,6 +87,6 @@ echo _gettext("Delete settings");
 
     public function getSourceContext()
     {
-        return new Source("", "preferences/autoload.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/preferences/autoload.twig");
+        return new Source("", "preferences/autoload.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/preferences/autoload.twig");
     }
 }

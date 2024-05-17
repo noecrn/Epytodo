@@ -380,6 +380,6 @@ echo _gettext("Allow users to customize this value");
 
     public function getSourceContext()
     {
-        return new Source("", "config/form_display/input.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/config/form_display/input.twig");
+        return new Source("", "config/form_display/input.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/config/form_display/input.twig");
     }
 }

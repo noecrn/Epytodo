@@ -17,9 +17,9 @@ const todosRoutes = require('./routes/todos/todos');
 app.use(express.json());
 
 // Use Routes
-app.use('/auth', authRoutes);
-app.use('/user', auth, userRoutes);
-app.use('/todos', auth, todosRoutes);
+app.use('/', authRoutes);
+app.use('/', auth, userRoutes);
+app.use('/', auth, todosRoutes);
 
 app.use(notFound);
 

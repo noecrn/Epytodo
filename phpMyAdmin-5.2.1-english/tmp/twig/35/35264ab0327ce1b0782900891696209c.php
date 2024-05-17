@@ -94,6 +94,6 @@ class __TwigTemplate_32e55a00d9b35bbdcefad412762a5c90 extends Template
 
     public function getSourceContext()
     {
-        return new Source("", "display/results/table_headers_for_columns.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/display/results/table_headers_for_columns.twig");
+        return new Source("", "display/results/table_headers_for_columns.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/display/results/table_headers_for_columns.twig");
     }
 }

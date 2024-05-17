@@ -78,6 +78,6 @@ class __TwigTemplate_3e42dd2532e6bb94b364aed01a221bdb extends Template
 
     public function getSourceContext()
     {
-        return new Source("", "display/results/comment_for_row.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/display/results/comment_for_row.twig");
+        return new Source("", "display/results/comment_for_row.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/display/results/comment_for_row.twig");
     }
 }

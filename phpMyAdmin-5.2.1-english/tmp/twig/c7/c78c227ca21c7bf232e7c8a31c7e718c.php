@@ -94,6 +94,6 @@ echo _gettext("Clear fast filter");
 
     public function getSourceContext()
     {
-        return new Source("", "navigation/tree/fast_filter.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/navigation/tree/fast_filter.twig");
+        return new Source("", "navigation/tree/fast_filter.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/navigation/tree/fast_filter.twig");
     }
 }

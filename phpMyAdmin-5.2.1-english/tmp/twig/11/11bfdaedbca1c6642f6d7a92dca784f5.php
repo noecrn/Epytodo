@@ -71,6 +71,6 @@ class __TwigTemplate_8bab762677d90d3596e46d27a13f06b1 extends Template
 
     public function getSourceContext()
     {
-        return new Source("", "display/results/row_data.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/display/results/row_data.twig");
+        return new Source("", "display/results/row_data.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/display/results/row_data.twig");
     }
 }

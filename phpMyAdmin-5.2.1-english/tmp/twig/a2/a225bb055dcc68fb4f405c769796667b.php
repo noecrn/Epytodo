@@ -759,6 +759,6 @@ echo _gettext("Query results operations");
 
     public function getSourceContext()
     {
-        return new Source("", "display/results/table.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/display/results/table.twig");
+        return new Source("", "display/results/table.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/display/results/table.twig");
     }
 }

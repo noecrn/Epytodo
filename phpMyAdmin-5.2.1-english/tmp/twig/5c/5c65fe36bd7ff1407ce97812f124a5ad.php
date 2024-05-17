@@ -215,6 +215,6 @@ echo _pgettext("Last page", "End");
 
     public function getSourceContext()
     {
-        return new Source("", "list_navigator.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/list_navigator.twig");
+        return new Source("", "list_navigator.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/list_navigator.twig");
     }
 }

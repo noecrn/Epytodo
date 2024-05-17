@@ -174,6 +174,6 @@ echo _gettext("Table:");
 
     public function getSourceContext()
     {
-        return new Source("", "menu/breadcrumbs.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/menu/breadcrumbs.twig");
+        return new Source("", "menu/breadcrumbs.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/menu/breadcrumbs.twig");
     }
 }

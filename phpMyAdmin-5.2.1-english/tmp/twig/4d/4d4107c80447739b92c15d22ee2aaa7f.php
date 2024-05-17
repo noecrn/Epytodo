@@ -80,6 +80,6 @@ class __TwigTemplate_d164f972e2ab257086a59296ff7beb9c extends Template
 
     public function getSourceContext()
     {
-        return new Source("", "sql/sql_query_results.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/sql/sql_query_results.twig");
+        return new Source("", "sql/sql_query_results.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/sql/sql_query_results.twig");
     }
 }

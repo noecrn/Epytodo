@@ -57,8 +57,8 @@ router.post("/login", (req, res)=> {
 			else {
 				const hashedPassword = result[0].password
 				const userId = result[0].id;
-				console.log(userId);
 				const email = result[0].email;
+				console.log(email);
 				const name = result[0].name;
 				const firstname = result[0].firstname;
 				const created_at = result[0].created_at;

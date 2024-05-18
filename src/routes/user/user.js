@@ -8,15 +8,13 @@ const router = express.Router();
 
 // View all user information
 router.get("/user", (req, res) => {
-	const email = req.user.email;
-
     db.getConnection((err, connection) => {
         if (err) {
             console.error("[ERROR] " + err);
             return res.status(500).json({ msg: "Internal server error" });
         }
 
-        connection.query(userQuery.getuserByEmail, [email], (err, result) => {
+        connection.query(userQuery.getuserByEmail, [req.user.email], (err, result) => {
             connection.release();
             if (err) {
                 console.error("[ERROR] " + err);
@@ -30,7 +28,7 @@ router.get("/user", (req, res) => {
 
             res.json({
 				id: user.id,
-                email: email,
+                email: user.email,
                 password: user.password,
 				created_at: user.created_at,
 				firstname: user.firstname,
@@ -74,9 +72,15 @@ router.get("/users/:identifier", (req, res) => {
         userQuery.getuserById;
     }
 
-	if (req.user.id !== identifier) {
+	if (req.user.id.toString() !== identifier && req.user.email !== identifier) {
 		return res.status(403).json({ error: 'Unauthorized' });
 	}
+
+    if (isNaN(identifier)) {
+        getQuery = userQuery.getuserByEmail;
+    } else {
+        getQuery = userQuery.getuserById;
+    }
 
     db.getConnection((err, connection) => {
         if (err) {

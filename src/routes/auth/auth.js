@@ -41,10 +41,6 @@ router.post("/register", async (req,res) => {
 router.post("/login", (req, res)=> {
 	const email = req.body.email
 	const password = req.body.password
-	const userId = req.body.id;
-	const name = req.body.name;
-	const firstname = req.body.firstname;
-	const created_at = req.body.created_at;
 
 	db.getConnection ( async (err, connection)=> {
 		if (err) throw (err)
@@ -56,10 +52,16 @@ router.post("/login", (req, res)=> {
 
 			if (err) throw (err)
 			if (result.length == 0) {
-				res.sendStatus(404).json({msg: "User does not exist"})
+				res.status(404).json({msg: "Invalid Credentials"})
 			}
 			else {
 				const hashedPassword = result[0].password
+				const userId = result[0].id;
+				console.log(userId);
+				const email = result[0].email;
+				const name = result[0].name;
+				const firstname = result[0].firstname;
+				const created_at = result[0].created_at;
 				
 				if (await bcrypt.compare(password, hashedPassword)) {
 					const token = generateAccessToken({userId: userId, email: email, name: name, firstname: firstname, created_at: created_at})

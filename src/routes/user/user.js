@@ -42,8 +42,6 @@ router.get("/user", (req, res) => {
 
 // View all user tasks
 router.get("/user/todos", (req, res) => {
-	const email = req.user.email;
-
     db.getConnection((err, connection) => {
         if (err) {
             console.error("[ERROR] " + err);
@@ -76,6 +74,10 @@ router.get("/users/:identifier", (req, res) => {
         userQuery.getuserById;
     }
 
+	if (req.user.id !== identifier) {
+		return res.status(403).json({ error: 'Unauthorized' });
+	}
+
     db.getConnection((err, connection) => {
         if (err) {
             console.error("[ERROR] " + err);
@@ -103,6 +105,10 @@ router.get("/users/:identifier", (req, res) => {
 router.put("/users/:id", (req, res) => {
     const id = req.params.id;
     const { email, password, firstname, name } = req.body;
+
+	if (req.user.id !== id) {
+		return res.status(403).json({ error: 'Unauthorized' });
+	}
 
     bcrypt.hash(password, 10, function(err, hashedPassword) {
         if (err) {
@@ -154,6 +160,10 @@ router.put("/users/:id", (req, res) => {
 // Delete user
 router.delete("/users/:id", (req, res) => {
 	const id = req.params.id;
+
+	if (req.user.id !== id) {
+		return res.status(403).json({ error: 'Unauthorized' });
+	}
 
 	db.getConnection((err, connection) => {
 		if (err) {

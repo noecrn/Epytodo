@@ -734,6 +734,6 @@ echo _gettext("Get more themes!");
 
     public function getSourceContext()
     {
-        return new Source("", "home/index.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/home/index.twig");
+        return new Source("", "home/index.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/home/index.twig");
     }
 }

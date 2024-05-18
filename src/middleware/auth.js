@@ -13,7 +13,7 @@ function authenticateToken(req, res, next) {
   // Verify token
   jwt.verify(token, process.env.SECRET, {expiresIn: "24h"}, (err, user) => {
     if (err) return res.status(403).json({msg: 'Token is not valid'});
-    req.user = user
+    req.user = { id: user.id };
     next()
   })
 };

@@ -2,15 +2,15 @@
 - [x] Register a new User
 - [x] Connect a User
 - [x] View all User information
-- [ ] View all User tasks
-- [ ] View User information
+- [x] View all User tasks
+- [x] View User information
 - [x] Update User information
-- [ ] Delete User
-- [ ] View all the todos
-- [ ] View the todo
+- [x] Delete User
+- [x] View all the todos
+- [x] View the todo
 - [x] Create a todo
-- [ ] Update a todo
-- [ ] Delete a todo
+- [x] Update a todo
+- [x] Delete a todo
 
 ---
 
@@ -26,7 +26,7 @@ To use the EpyTodo, you need to install the dependencies and launch it locally o
 
 *Clone the project:*
 ```
-git clone git@github.com:ZerLock/Epytodo.git
+git clone git@github.com:noecrn/EpyTodo.git
 
 cd EpyTodo
 ```
@@ -36,14 +36,16 @@ cd EpyTodo
 npm install
 ```
 
-*Create the database:*
+*Run the database:*
 ```
-cat epytodo.sql | mysql -u root -p
+cd phpMyAdmin-5.2.1-english
+
+php -S localhost:8080 -t .
 ```
 
 *Run the project:*
 ```
-npm start
+node index.js
 ```
 
 ---

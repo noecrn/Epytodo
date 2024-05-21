@@ -489,6 +489,6 @@ echo _gettext("Edit partitioning");
 
     public function getSourceContext()
     {
-        return new Source("", "table/structure/display_partitions.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/table/structure/display_partitions.twig");
+        return new Source("", "table/structure/display_partitions.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/table/structure/display_partitions.twig");
     }
 }

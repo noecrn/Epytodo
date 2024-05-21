@@ -79,6 +79,6 @@ echo _gettext("With selected:");
 
     public function getSourceContext()
     {
-        return new Source("", "select_all.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/select_all.twig");
+        return new Source("", "select_all.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/select_all.twig");
     }
 }

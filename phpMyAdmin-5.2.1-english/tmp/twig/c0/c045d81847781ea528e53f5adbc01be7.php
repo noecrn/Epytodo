@@ -12,8 +12,8 @@ use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Source;
 use Twig\Template;
 
-/* config/form_display/group_header.twig */
-class __TwigTemplate_9db430d4ab18802b0183880db5d39ab3 extends Template
+/* table/insert/get_html_for_insert_edit_form_header.twig */
+class __TwigTemplate_6b965c234ea03d43250a2e015c7fb944 extends Template
 {
     private $source;
     private $macros = [];
@@ -34,25 +34,18 @@ class __TwigTemplate_9db430d4ab18802b0183880db5d39ab3 extends Template
     {
         $macros = $this->macros;
         // line 1
-        echo "<tr class=\"group-header group-header-";
-        echo twig_escape_filter($this->env, ($context["group"] ?? null), "html", null, true);
-        echo "\">
-    <th colspan=\"";
-        // line 2
-        echo twig_escape_filter($this->env, ($context["colspan"] ?? null), "html", null, true);
-        echo "\">
-        ";
-        // line 3
-        echo twig_escape_filter($this->env, ($context["header_text"] ?? null), "html", null, true);
-        echo "
-    </th>
-</tr>
-";
+        echo "<form id=\"insertForm\" class=\"lock-page";
+        echo (((($context["has_blob_field"] ?? null) && ($context["is_upload"] ?? null))) ? (" disableAjax") : (""));
+        echo "\" method=\"post\" action=\"";
+        echo PhpMyAdmin\Url::getFromRoute("/table/replace");
+        echo "\" name=\"insertForm\"";
+        echo ((($context["is_upload"] ?? null)) ? (" enctype=\"multipart/form-data\"") : (""));
+        echo ">";
     }
 
     public function getTemplateName()
     {
-        return "config/form_display/group_header.twig";
+        return "table/insert/get_html_for_insert_edit_form_header.twig";
     }
 
     public function isTraitable()
@@ -62,11 +55,11 @@ class __TwigTemplate_9db430d4ab18802b0183880db5d39ab3 extends Template
 
     public function getDebugInfo()
     {
-        return array (  46 => 3,  42 => 2,  37 => 1,);
+        return array (  37 => 1,);
     }
 
     public function getSourceContext()
     {
-        return new Source("", "config/form_display/group_header.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/config/form_display/group_header.twig");
+        return new Source("", "table/insert/get_html_for_insert_edit_form_header.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/table/insert/get_html_for_insert_edit_form_header.twig");
     }
 }

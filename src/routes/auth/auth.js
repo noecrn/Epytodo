@@ -12,6 +12,7 @@ router.post("/register", async (req,res) => {
 	const name = req.body.name;
 	const firstname = req.body.firstname;
 	const hashedPassword = await bcrypt.hash(req.body.password,10);
+	const created_at = new Date();
 
 	db.getConnection( async (err, connection) => {
 		if (err) throw (err)
@@ -24,13 +25,15 @@ router.post("/register", async (req,res) => {
 			if (err) throw (err)
 			if (result.length != 0) {
 				connection.release();
-				res.json({msg: "Account already exists"});
+				res.status(409).json({msg: "Account already exists"});
 			} 
 			else {
 				await connection.query (insert_query, (err, result)=> {
-					connection.release();
 					if (err) throw (err)
-					res.status(201).json({token: "Token of the newly registered user"});
+					const userId = result.insertId;
+					const token = generateAccessToken({userId: userId, email: email, name: name, firstname: firstname, created_at: created_at});
+					connection.release();
+					res.status(201).json({ id: userId, token: token });
 				})
 			}
 		})
@@ -52,23 +55,21 @@ router.post("/login", (req, res)=> {
 
 			if (err) throw (err)
 			if (result.length == 0) {
-				res.status(404).json({msg: "Invalid Credentials"})
+				res.status(401).json({msg: "Invalid Credentials"})
 			}
 			else {
 				const hashedPassword = result[0].password
 				const userId = result[0].id;
 				const email = result[0].email;
-				console.log(email);
 				const name = result[0].name;
 				const firstname = result[0].firstname;
 				const created_at = result[0].created_at;
 				
 				if (await bcrypt.compare(password, hashedPassword)) {
-					const token = generateAccessToken({userId: userId, email: email, name: name, firstname: firstname, created_at: created_at})
-					console.log(token);
-					res.json({token: 'Token of the newly logged in user'});
+					const token = generateAccessToken({userId: userId, email: email, name: name, firstname: firstname, created_at: created_at});
+					res.status(201).json({ id: userId, token: token });
 				} else {
-					res.json({msg: "Invalid Credentials"})
+					res.status(401).json({msg: "Invalid Credentials"})
 				}
 			}
 		})

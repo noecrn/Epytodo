@@ -1510,6 +1510,6 @@ echo _gettext("Partitions");
 
     public function getSourceContext()
     {
-        return new Source("", "table/structure/display_structure.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/table/structure/display_structure.twig");
+        return new Source("", "table/structure/display_structure.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/table/structure/display_structure.twig");
     }
 }

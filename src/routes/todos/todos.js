@@ -90,8 +90,12 @@ router.post("/todos", (req, res) => {
 
 // Update a todo
 router.put("/todos/:id", (req, res) => {
-	const id = req.params.id;
+    const id = parseInt(req.params.id, 10);
 	const { title, description, due_time, user_id, status } = req.body;
+
+	if (req.user.id !== id) {
+		return res.status(403).json({ error: 'Unauthorized' });
+	}
 
 	db.getConnection((err, connection) => {
 		if (err) {
@@ -133,7 +137,12 @@ router.put("/todos/:id", (req, res) => {
 
 // Delete a todo
 router.delete("/todos/:id", (req, res) => {
-	const id = req.params.id;
+    const id = parseInt(req.params.id, 10);
+	console.log(req.body.user_id);
+
+	if (req.user.id !== req.body.user_id) {
+		return res.status(403).json({ error: 'Unauthorized' });
+	}
 
 	db.getConnection((err, connection) => {
 		if (err) {

@@ -26,7 +26,7 @@ router.get("/user", (req, res) => {
 
             const user = result[0];
 
-            res.json({
+            res.status(200).json({
 				id: user.id,
                 email: user.email,
                 password: user.password,
@@ -56,7 +56,7 @@ router.get("/user/todos", (req, res) => {
                 return res.status(404).json({ msg: "No todos found for this user" });
             }
 			
-			res.json(result);
+			res.status(200).json(result);
         });
     });
 });
@@ -100,14 +100,14 @@ router.get("/users/:identifier", (req, res) => {
 
             const user = result[0];
 
-            res.json(user);
+            res.status(200).json(user);
         });
     });
 });
 
 // Update user information
 router.put("/users/:id", (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id, 10);
     const { email, password, firstname, name } = req.body;
 
 	if (req.user.id !== id) {
@@ -147,7 +147,7 @@ router.put("/users/:id", (req, res) => {
 
                     connection.release();
                     const user = rows[0];
-					res.json({
+					res.status(200).json({
 						id: user.id,
 						email: user.email,
 						password: user.password,
@@ -163,7 +163,7 @@ router.put("/users/:id", (req, res) => {
 
 // Delete user
 router.delete("/users/:id", (req, res) => {
-	const id = req.params.id;
+    const id = parseInt(req.params.id, 10);
 
 	if (req.user.id !== id) {
 		return res.status(403).json({ error: 'Unauthorized' });

@@ -115,6 +115,6 @@ echo _gettext("Go back");
 
     public function getSourceContext()
     {
-        return new Source("", "modals/index_dialog_modal.twig", "/Users/noecrn/Downloads/phpMyAdmin-5.2.1-english/templates/modals/index_dialog_modal.twig");
+        return new Source("", "modals/index_dialog_modal.twig", "/Users/noecrn/Documents/EPYTODO/phpMyAdmin-5.2.1-english/templates/modals/index_dialog_modal.twig");
     }
 }
